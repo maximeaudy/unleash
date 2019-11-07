@@ -1,0 +1,14 @@
+{
+    "name": "root/unleash",
+    "authors": [
+        {
+            "name": "maximeaudy",
+            "email": "maxime.audy@epsi.fr"
+        }
+    ],
+    "require": {
+        "mongodb/mongodb": "^1.5",
+        "ext-curl": "^7.2",
+        "ext-mongodb": "^1.6"
+    }
+}
