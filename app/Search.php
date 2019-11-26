@@ -29,7 +29,6 @@ class Search{
 
 		$jsonData = json_decode($this->flickr->searchPhotos($this->tags));
 
-
 		try{
             $mongo = new \MongoDB\Collection(new \MongoDB\Driver\Manager(), "flickr", "images");
             $images = $jsonData->photos->photo;

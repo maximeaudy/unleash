@@ -1,5 +1,6 @@
 <?php
 require_once('Search.php');
+require_once('Site.php');
 require_once('Flickr.php');
 
 // Form recherche

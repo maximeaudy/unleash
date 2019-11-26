@@ -5,79 +5,82 @@ use MongoDB\Driver\Manager;
 require_once('vendor/autoload.php');
 require_once('app/init.php');
 ?>
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title><?= $site->name; ?></title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
-	</head>
-	<body>
-		<div id="wrapper">
-			<header id="header">
-				<span class="avatar"><i class="fas fa-search"></i></span>
-				<h1>
-					La vie est <b>belle</b> avec <b>UNLEASH</b><br>
-					Libérez votre esprit...
-				</h1>
-				<?php if(isset($return)) echo $return; ?>
-				<form action="#" method="post">
-					<input type="text" id="search" name="tags" placeholder="sports, art, nature, animaux" />
-					<input type="submit" value="Rechercher">
-				</form>
-				<ul class="icons">
-					<li><a href="#" class="icon style2 fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon style2 fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon style2 fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon style2 fa-500px"><span class="label">500px</span></a></li>
-					<li><a href="#" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
-				</ul>
-			</header>
+<!doctype html>
+<html lang="fr">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><?= $site->name; ?></title>
 
-			<!-- Main -->
-			<section id="main">
-				<!-- Thumbnails -->
-				<section class="thumbnails">
-					<div>
-                        <?php
-                            $mongo = new \MongoDB\Collection(new Manager("mongodb://localhost:27017"), "flickr", "images");
-                            $images = $mongo->find();
-                            foreach ($images as $image){
-                        ?>
-						<a href="https://farm<?= $image->farm; ?>.staticflickr.com/<?= $image->server; ?>/<?= $image->id; ?>_<?= $image->secret; ?>.jpg">
-							<img src="https://farm<?= $image->farm; ?>.staticflickr.com/<?= $image->server; ?>/<?= $image->id; ?>_<?= $image->secret; ?>.jpg" alt="" />
-							<h3><?= $image->title; ?></h3>
-						</a>
-                        <?php } ?>
-					</div>
-					<div>
-						<a href="images/fulls/05.jpg">
-							<img src="images/thumbs/05.jpg" alt="" />
-							<h3>Lorem ipsum dolor sit amet</h3>
-						</a>
-					</div>
-					<div>
-						<a href="images/fulls/06.jpg">
-							<img src="images/thumbs/06.jpg" alt="" />
-							<h3>Lorem ipsum dolor sit amet</h3>
-						</a>
-					</div>
-				</section>
-			</section>
+    <link rel="stylesheet" href="styles.css">
 
-			<!-- Footer -->
-			<footer id="footer">
-				<p>&copy; Untitled. All rights reserved. Design: <a href="http://templated.co">TEMPLATED</a>. Demo Images: <a href="http://unsplash.com">Unsplash</a>.</p>
-			</footer>
-		</div>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.poptrox.min.js"></script>
-	<script src="assets/js/skel.min.js"></script>
-	<script src="assets/js/main.js"></script>
+    <title>Hello, world!</title>
+</head>
+<body class="bg-light">
+   	<div class="container page">
+    	<main class="pt-4">
+    		<?php if(isset($return)) echo $return; ?>
+			<form action="#" method="post">
+				<div class="form-group">
+					<label for="tags">Recherche</label>
+					<input type="text" id="search" name="tags" class="form-control" placeholder="sports, art, nature, animaux" />
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Rechercher" class="btn btn-primary">
+				</div>
+			</form>
+	        <div class="row">
+			<?php
+	            $mongo = new \MongoDB\Collection(new Manager("mongodb://localhost:27017"), "flickr", "images");
+	            $images = $mongo->find();
+	            foreach ($images as $image){
+	        ?>
+	            <div class="col-md-4">
+	                <div class="card mb-4 box-shadow">
+	                    <img class="card-img-top" src="https://farm<?= $image->farm; ?>.staticflickr.com/<?= $image->server; ?>/<?= $image->id; ?>_<?= $image->secret; ?>.jpg"" alt="Card image cap">
+	                    <div class="card-body">
+	                        <h3 class="title">nom du gars ici</h3>
+	                        <p class="card-text"><?= substr($image->title, 0, 30); ?></p>
+	                        <div class="d-flex justify-content-between align-items-center">
+	                            <div class="btn-group">
+	                                <button type="button" class="btn btn-sm btn-outline-primary">Détails</button>
+	                            </div>
+	                            <small class="text-primary" data-toggle="tooltip" data-placement="top" title="Commentaires">
+	                                5 commentaires
+	                            </small>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        <?php } ?>
+	        </div>
+    	</main>
 
-	</body>
+		<footer class="text-muted">
+	        <p class="float-right">
+	            <a href="#"><i class="fas fa-arrow-up"></i></a>
+	        </p>
+	        <p>2019 &copy; <?= $site->name; ?>, tous droits réservés.</p>
+	    </footer>
+   	</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/JavaScript">
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
+</body>
 </html>
