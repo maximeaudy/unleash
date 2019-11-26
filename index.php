@@ -26,7 +26,7 @@ require_once('app/init.php');
 <body class="bg-light">
    	<div class="container page">
     	<main class="pt-4">
-    		<?php if(isset($return)) echo $return; ?>
+    		<?php if(isset($return)) echo "<div class=\"alert alert-primary\" role=\"alert\">".$return."</div>"; ?>
 			<form action="#" method="post">
 				<div class="form-group">
 					<label for="tags">Recherche</label>
@@ -38,8 +38,9 @@ require_once('app/init.php');
 			</form>
 	        <div class="row">
 			<?php
+				if($_POST){
 	            $mongo = new \MongoDB\Collection(new Manager("mongodb://localhost:27017"), "flickr", "images");
-	            $images = $mongo->find();
+	            $images = $mongo->find(['']);
 	            foreach ($images as $image){
 	        ?>
 	            <div class="col-md-4">
@@ -59,7 +60,7 @@ require_once('app/init.php');
 	                    </div>
 	                </div>
 	            </div>
-	        <?php } ?>
+	        <?php } } ?>
 	        </div>
     	</main>
 

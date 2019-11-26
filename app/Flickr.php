@@ -5,7 +5,7 @@
  * Permet de gérer les appels à l'API
  */
 class Flickr{
-    private $api_key = "828e660b4e4c9f0a931a9adbe60ba348";
+    private $api_key = "8cb1743ca09f86934df2b128edb06e12";
     private $url_flickr = "https://www.flickr.com/services/rest/?method=";
     private $format = "json";
 
