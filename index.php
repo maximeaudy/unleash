@@ -39,15 +39,17 @@ require_once('app/init.php');
 	        <div class="row">
 			<?php
 				if($_POST){
-	            $mongo = new \MongoDB\Collection(new Manager("mongodb://localhost:27017"), "flickr", "images");
-	            $images = $mongo->find(['']);
+	            $images = Mongo::find("images", ["tags"=> $_POST['tags']]);
+
 	            foreach ($images as $image){
+
+//	                $userInfo = Mongo::find("users", ["id" => $image->owner])<?= $userInfo->realname;
 	        ?>
 	            <div class="col-md-4">
 	                <div class="card mb-4 box-shadow">
 	                    <img class="card-img-top" src="https://farm<?= $image->farm; ?>.staticflickr.com/<?= $image->server; ?>/<?= $image->id; ?>_<?= $image->secret; ?>.jpg"" alt="Card image cap">
 	                    <div class="card-body">
-	                        <h3 class="title">nom du gars ici</h3>
+	                        <h3 class="title"></h3>
 	                        <p class="card-text"><?= substr($image->title, 0, 30); ?></p>
 	                        <div class="d-flex justify-content-between align-items-center">
 	                            <div class="btn-group">
