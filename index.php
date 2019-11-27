@@ -39,7 +39,7 @@ require_once('app/init.php');
 	        <div class="row">
 			<?php
 				if($_POST){
-	            $images = Mongo::findAll("images", ["tags"=> $_POST['tags']]);
+	            $images = Mongo::findAll("images", ["tags"=> $search->getTags()]);
 
 	            foreach ($images as $image){
 
@@ -55,9 +55,7 @@ require_once('app/init.php');
 	                            <div class="btn-group">
 	                                <button type="button" class="btn btn-sm btn-outline-primary">Détails</button>
 	                            </div>
-	                            <small class="text-primary" data-toggle="tooltip" data-placement="top" title="Commentaires">
-	                                5 commentaires
-	                            </small>
+                                    <span class="badge badge-primary"><?= $image->tags; ?></span>
 	                        </div>
 	                    </div>
 	                </div>
