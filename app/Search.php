@@ -30,48 +30,52 @@ class Search{
 		if(empty($this->tags)) 
 			return "Vous devez saisir un mot clé minimum.";
 
-		$jsonData = json_decode($this->flickr->searchPhotos($this->tags));
-		$images = $jsonData->photos->photo;
+		// On vérifie si la recherche a déjà été faite
+		$existSearch = Mongo::findOne("images", ["tags" => $this->tags]);
+		if($existSearch === null) {
+            $jsonData = json_decode($this->flickr->searchPhotos($this->tags));
+            $images = $jsonData->photos->photo;
 
-        foreach ($images as $image){
-            // On enlève les champs que l'on ne veut pas stocker en bdd
-            unset($image->isfriend);
-            unset($image->isfamily);
-            unset($image->ispublic);
+            foreach ($images as $image) {
+                // On enlève les champs que l'on ne veut pas stocker en bdd
+                unset($image->isfriend);
+                unset($image->isfamily);
+                unset($image->ispublic);
 
-            // On rajoute le tags dans l'image
-            $image->tags = $this->tags;
+                // On rajoute le tags dans l'image
+                $image->tags = $this->tags;
 
-            //On vérifie si l'utilisateur a déjà été enregistré en bdd
-            if(Mongo::findOne("users", ["id" => $image->owner]) === null) {
-                // On enregistre les infos de l'utilisateur
-                $userInfos = json_decode($this->flickr->getUserInfo($image->owner));
+                //On vérifie si l'utilisateur a déjà été enregistré en bdd
+                if (Mongo::findOne("users", ["id" => $image->owner]) === null) {
+                    // On enregistre les infos de l'utilisateur
+                    $userInfos = json_decode($this->flickr->getUserInfo($image->owner));
 
-                $userInfos = [
-                    "id" => $userInfos->person->id,
-                    "realname" => $userInfos->person->realname->_content,
-                    "description" => $userInfos->person->description->_content
-                ];
+                    $userInfos = [
+                        "id" => $userInfos->person->id,
+                        "realname" => $userInfos->person->realname->_content,
+                        "description" => $userInfos->person->description->_content
+                    ];
 
-                Mongo::insertOne("users", $userInfos);
+                    Mongo::insertOne("users", $userInfos);
+                }
             }
+
+            // On enregistre les images
+            Mongo::insertMany("images", $images);
+
+            // On enregistre la recherche de l'utilisateur
+            $search = [
+                "filters" => [
+                    "size_image" => $this->size_image,
+                    "min_uploaded_date" => $this->min_uploaded_date,
+                    "max_uploaded_date" => $this->max_uploaded_date,
+                ],
+                "safe_search" => $this->safe_search,
+                "tags" => $this->tags
+            ];
+
+            Mongo::insertOne("searchs", $search);
         }
-
-        // On enregistre les images
-        Mongo::insertMany("images", $images);
-
-        // On enregistre la recherche de l'utilisateur
-        $search = [
-            "filters" => [
-                "size_image" => $this->size_image,
-                "min_uploaded_date" => $this->min_uploaded_date,
-                "max_uploaded_date" => $this->max_uploaded_date,
-            ],
-            "safe_search" => $this->safe_search,
-            "tags" => $this->tags
-        ];
-
-        Mongo::insertOne("searchs", $search);
 
         return "Les photos ont bien été récupérées";
 	}
