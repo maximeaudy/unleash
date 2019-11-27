@@ -43,16 +43,18 @@ class Search{
             $image->tags = $this->tags;
 
             //On vérifie si l'utilisateur a déjà été enregistré en bdd
-            // On enregistre les infos de l'utilisateur
-            $userInfos = json_decode($this->flickr->getUserInfo($image->owner));
+            if(Mongo::findOne("users", ["id" => $image->owner]) === null) {
+                // On enregistre les infos de l'utilisateur
+                $userInfos = json_decode($this->flickr->getUserInfo($image->owner));
 
-            $userInfos = [
-                "id" => $userInfos->person->id,
-                "realname" => $userInfos->person->realname->_content,
-                "description" => $userInfos->person->description->_content
-            ];
+                $userInfos = [
+                    "id" => $userInfos->person->id,
+                    "realname" => $userInfos->person->realname->_content,
+                    "description" => $userInfos->person->description->_content
+                ];
 
-            Mongo::insertOne("users", $userInfos);
+                Mongo::insertOne("users", $userInfos);
+            }
         }
 
         // On enregistre les images
