@@ -36,7 +36,7 @@ require_once('app/init.php');
 		<span class="badge badge-primary"><?= $image->tags; ?></span>
 		<div>
             <h3> Commentaires </h3>
-            <li> <?= ?> </li>      
+            <li> <?= $Commentaires ?> </li>      
         </div>
 
 
