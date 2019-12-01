@@ -31,6 +31,33 @@ class Flickr{
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         return curl_exec($curl);
     }
+
+    public function getListComments($photo_id){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "{$this->url_flickr}flickr.photos.comments.getList&api_key={$this->api_key}&photo_id={$photo_id}&format={$this->format}&nojsoncallback=1");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        return curl_exec($curl);
+    }
+    /*public function addComment($photo_id){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "{$this->url_flickr}flickr.photos.comments.addComment&api_key={$this->api_key}&photo_id={$photo_id}&format={$this->format}&nojsoncallback=1");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        return curl_exec($curl);
+    }
+
+    public function editComment($comment_id){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "{$this->url_flickr}flickr.photos.comments.editComment&api_key={$this->api_key}&comment_id={$comment_id}&format={$this->format}&nojsoncallback=1");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        return curl_exec($curl);
+    }
+
+    public function deleteComment($comment_id){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "{$this->url_flickr}flickr.photos.comments.deleteComment&api_key={$this->api_key}&comment_id={$comment_id}&format={$this->format}&nojsoncallback=1");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        return curl_exec($curl);
+    }*/
 }
 
 $flickr = new Flickr();
